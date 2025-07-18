@@ -8,12 +8,17 @@ import joblib
 # Load dataset
 df = pd.read_csv('D:\Sparsh\ML_Projects\Student_Performance_Prediction\Dataset\student_performance_dataset.csv')
 
-# Encode categorical features
+# List of categorical columns
+categorical_cols = ['parent_education', 'extra_activities', 'course_done']
 
-le = LabelEncoder()
-df['parent_education'] = le.fit_transform(df['parent_education'])  # e.g., ['High School', 'Graduate', 'Post Graduate']
-df['extra_activities'] = le.fit_transform(df['extra_activities'])  # e.g., ['Yes', 'No']
-df['course_done'] = le.fit_transform(df['course_done'])            # e.g., ['Yes', 'No']
+# Dictionary to store encoders
+label_encoders = {}
+
+# Apply label encoding
+for col in categorical_cols:
+    le = LabelEncoder()
+    df[col] = le.fit_transform(df[col])
+    label_encoders[col] = le
 
 # Features and Target
 X = df.drop(columns=['final_grade'])
