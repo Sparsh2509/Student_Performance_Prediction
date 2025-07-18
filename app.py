@@ -4,8 +4,8 @@ import pandas as pd
 import joblib
 
 # Load model and encoders
-model = joblib.load("D:\Sparsh\ML_Projects\Student_Performance_Prediction\student_performance_model.joblib")
-label_encoders = joblib.load("D:\Sparsh\ML_Projects\Student_Performance_Prediction\label_encoders.joblib")
+model = joblib.load("student_performance_model.joblib")
+label_encoders = joblib.load("label_encoders.joblib")
 
 # Define request schema
 class StudentInput(BaseModel):
@@ -35,7 +35,7 @@ def predict(data: StudentInput):
             if input_data[col] not in encoder.classes_:
                 return {"error": f"Unknown category '{input_data[col]}' for field '{col}'."}
             input_data[col] = encoder.transform([input_data[col]])[0]
-            
+
         # Convert input to DataFrame
         df_input = pd.DataFrame([input_data])
 
