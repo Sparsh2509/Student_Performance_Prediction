@@ -52,6 +52,13 @@ def predict(data: StudentInput):
 
         prediction = model.predict(df_input)[0]
         return {"predicted_final_grade": round(prediction, 2)}
+
+        # Convert input to DataFrame
+        df_input = pd.DataFrame([input_data])
+
+        # Predict
+        prediction = model.predict(df_input)[0]
+        return {"predicted_final_grade": round(prediction, 2)}
     
     except Exception as e:
          raise HTTPException(status_code=500, detail=str(e))
