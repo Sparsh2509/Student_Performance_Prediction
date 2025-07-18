@@ -41,5 +41,5 @@ print(f"R² Score: {r2}")
 
 # Save model and label encoder
 joblib.dump(model, 'student_performance_model.joblib')
-joblib.dump(le, 'label_encoders.joblib')
+joblib.dump(label_encoders, 'label_encoders.joblib')
 print("Model and encoder saved.")

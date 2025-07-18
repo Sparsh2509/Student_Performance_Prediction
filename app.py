@@ -5,7 +5,7 @@ import joblib
 
 # Load model and encoders
 model = joblib.load("D:\Sparsh\ML_Projects\Student_Performance_Prediction\student_performance_model.joblib")
-label_encoders = joblib.load("D:\Sparsh\ML_Projects\Student_Performance_Prediction\label_encoder.joblib")
+label_encoders = joblib.load("D:\Sparsh\ML_Projects\Student_Performance_Prediction\label_encoders.joblib")
 
 # Define request schema
 class StudentInput(BaseModel):
