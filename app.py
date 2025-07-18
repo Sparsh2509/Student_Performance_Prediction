@@ -24,6 +24,10 @@ class StudentInput(BaseModel):
 # FastAPI app
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the Student Performance Prediction API!"}
+
 @app.post("/predict")
 def predict(data: StudentInput):
     try:
