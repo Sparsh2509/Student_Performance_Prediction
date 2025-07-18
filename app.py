@@ -18,7 +18,7 @@ class StudentInput(BaseModel):
     put: float
     st1: float
     st2: float
-    ct: float
+    class_test_performance: float
 
 # FastAPI app
 app = FastAPI()
@@ -35,10 +35,21 @@ def predict(data: StudentInput):
                 return {"error": f"Unknown category '{input_data[col]}' for field '{col}'."}
             input_data[col] = encoder.transform([input_data[col]])[0]
 
-        # Convert input to DataFrame
-        df_input = pd.DataFrame([input_data])
+        column_order = [
+            'hours_studied',
+            'attendance',
+            'parent_education',
+            'extra_activities',
+            'course_done',
+            'course_score',
+            'put',
+            'st1',
+            'st2',
+            'class_test_performance'
+        ]
 
-        # Predict
+        df_input = pd.DataFrame([[input_data[col] for col in column_order]], columns=column_order)
+
         prediction = model.predict(df_input)[0]
         return {"predicted_final_grade": round(prediction, 2)}
     
