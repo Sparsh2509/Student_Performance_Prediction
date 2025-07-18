@@ -24,22 +24,23 @@ class StudentInput(BaseModel):
 app = FastAPI()
 
 @app.post("/predict")
-def predict_final_grade(data: StudentInput):
+def predict(data: StudentInput):
     try:
         input_data = data.dict()
-        df = pd.DataFrame([input_data])
 
-        # Encode categorical columns
+        # Apply label encoders to the necessary fields
         for col in ['parent_education', 'extra_activities', 'course_done']:
-            if col in label_encoders:
-                le = label_encoders[col]
-                if df[col].iloc[0] not in le.classes_:
-                    raise HTTPException(status_code=400, detail=f"Invalid value for {col}: {df[col].iloc[0]}")
-                df[col] = le.transform(df[col])
+            encoder = label_encoders[col]
+            if input_data[col] not in encoder.classes_:
+                return {"error": f"Unknown category '{input_data[col]}' for field '{col}'."}
+            input_data[col] = encoder.transform([input_data[col]])[0]
+
+        # Convert input to DataFrame
+            df_input = pd.DataFrame([input_data])
 
         # Predict
-        prediction = model.predict(df)[0]
-        return {"predicted_final_grade": round(prediction, 2)}
-
+            prediction = model.predict(df_input)[0]
+            return {"predicted_final_grade": round(prediction, 2)}
+    
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+         raise HTTPException(status_code=500, detail=str(e))
