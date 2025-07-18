@@ -9,6 +9,7 @@ import joblib
 df = pd.read_csv('D:\Sparsh\ML_Projects\Student_Performance_Prediction\Dataset\student_performance_dataset.csv')
 
 # Encode categorical features
+
 le = LabelEncoder()
 df['parent_education'] = le.fit_transform(df['parent_education'])  # e.g., ['High School', 'Graduate', 'Post Graduate']
 df['extra_activities'] = le.fit_transform(df['extra_activities'])  # e.g., ['Yes', 'No']
