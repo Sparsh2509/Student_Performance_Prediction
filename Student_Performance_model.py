@@ -34,6 +34,6 @@ print(f"Mean Squared Error: {mse}")
 print(f"R² Score: {r2}")
 
 # Save model and label encoder
-joblib.dump(model, 'student_performance_model.pkl')
-joblib.dump(le, 'label_encoder.pkl')
+joblib.dump(model, 'student_performance_model.joblib')
+joblib.dump(le, 'label_encoder.joblib')
 print("Model and encoder saved.")
