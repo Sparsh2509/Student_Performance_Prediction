@@ -36,11 +36,11 @@ def predict(data: StudentInput):
             input_data[col] = encoder.transform([input_data[col]])[0]
 
         # Convert input to DataFrame
-            df_input = pd.DataFrame([input_data])
+        df_input = pd.DataFrame([input_data])
 
         # Predict
-            prediction = model.predict(df_input)[0]
-            return {"predicted_final_grade": round(prediction, 2)}
+        prediction = model.predict(df_input)[0]
+        return {"predicted_final_grade": round(prediction, 2)}
     
     except Exception as e:
          raise HTTPException(status_code=500, detail=str(e))
