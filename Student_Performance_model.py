@@ -6,7 +6,7 @@ from sklearn.preprocessing import LabelEncoder
 import joblib
 
 # Load dataset
-df = pd.read_csv('D:\Sparsh\ML_Projects\Student_Performance_Prediction\Dataset\student_performance_portuguese_dataset.csv')  # Change path if needed
+df = pd.read_csv('D:\Sparsh\ML_Projects\Student_Performance_Prediction\Dataset\student_performance_portuguese_dataset.csv') 
 
 # Target
 y = df['G3']
