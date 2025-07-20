@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 import pandas as pd
 import joblib
 
@@ -8,46 +8,45 @@ model = joblib.load("student_performance_model.joblib")
 label_encoders = joblib.load("label_encoders.joblib")
 
 # Define section-wise input models
-
 class StudentDetails(BaseModel):
-    school: str
-    sex: str
-    age: int
-    address: str
+    school: str = Field(...)
+    sex: str = Field(...)
+    age: int = Field(..., ge=15, le=22)
+    address: str = Field(...)
 
 class FamilyBackground(BaseModel):
-    famsize: str
-    Pstatus: str
-    Medu: int
-    Fedu: int
-    Mjob: str
-    Fjob: str
-    reason: str
-    guardian: str
-    famsup: str
+    famsize: str = Field(...)
+    Pstatus: str = Field(...)
+    Medu: int = Field(..., ge=0, le=4)
+    Fedu: int = Field(..., ge=0, le=4)
+    Mjob: str = Field(...)
+    Fjob: str = Field(...)
+    reason: str = Field(...)
+    guardian: str = Field(...)
+    famsup: str = Field(...)
 
 class AcademicStatus(BaseModel):
-    traveltime: int
-    studytime: int
-    failures: int
-    schoolsup: str
-    paid: str
-    activities: str
-    internet: str
-    nursery: str
-    higher: str
-    absences: int
-    G1: int
-    G2: int
+    traveltime: int = Field(..., ge=1, le=4)
+    studytime: int = Field(..., ge=1, le=4)
+    failures: int = Field(..., ge=0, le=4)
+    schoolsup: str = Field(...)
+    paid: str = Field(...)
+    activities: str = Field(...)
+    internet: str = Field(...)
+    nursery: str = Field(...)
+    higher: str = Field(...)
+    absences: int = Field(..., ge=0, le=93)
+    G1: int = Field(..., ge=0, le=20)
+    G2: int = Field(..., ge=0, le=20)
 
 class HealthStatus(BaseModel):
-    romantic: str
-    famrel: int
-    freetime: int
-    goout: int
-    Dalc: int
-    Walc: int
-    health: int
+    romantic: str = Field(...)
+    famrel: int = Field(..., ge=1, le=5)
+    freetime: int = Field(..., ge=1, le=5)
+    goout: int = Field(..., ge=1, le=5)
+    Dalc: int = Field(..., ge=1, le=5)
+    Walc: int = Field(..., ge=1, le=5)
+    health: int = Field(..., ge=1, le=5)
 
 class StudentInput(BaseModel):
     student: StudentDetails
@@ -72,6 +71,9 @@ def predict(data: StudentInput):
             **data.academic.dict(),
             **data.health.dict()
         }
+
+        # Normalize all string inputs to lowercase
+        input_data = {k: v.lower() if isinstance(v, str) else v for k, v in input_data.items()}
 
         # Apply label encoding where needed
         for col in label_encoders:
