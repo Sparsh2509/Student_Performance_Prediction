@@ -7,7 +7,7 @@ import joblib
 model = joblib.load("student_performance_model.joblib")
 label_encoders = joblib.load("label_encoders.joblib")
 
-# Define section-wise input models
+# Sectioned input models
 class StudentDetails(BaseModel):
     school: str = Field(...)
     sex: str = Field(...)
@@ -72,7 +72,7 @@ def predict(data: StudentInput):
             **data.health.dict()
         }
 
-        # Normalize all string inputs to lowercase
+        # Convert all string inputs to lowercase
         input_data = {k: v.lower() if isinstance(v, str) else v for k, v in input_data.items()}
 
         # Apply label encoding where needed
@@ -89,7 +89,28 @@ def predict(data: StudentInput):
 
         # Predict final grade
         prediction = model.predict(df_input)[0]
-        return {"predicted_final_Marks": round(prediction, 2)}
+
+        # Generate remark
+        def get_remark(score):
+            if score >= 18:
+                return "A+ (Excellent)"
+            elif score >= 16:
+                return "A (Very Good)"
+            elif score >= 14:
+                return "B+ (Good)"
+            elif score >= 12:
+                return "B (Average)"
+            elif score >= 10:
+                return "C (Below Avg)"
+            else:
+                return "D (Poor)"
+
+        remark = get_remark(prediction)
+
+        return {
+            "predicted_final_Marks": round(prediction, 2),
+            "remark": remark
+        }
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
