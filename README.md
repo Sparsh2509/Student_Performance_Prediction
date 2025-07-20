@@ -22,13 +22,13 @@ A machine learning-powered web API using **FastAPI** to predict the **final grad
 
 ```
 student_performance_prediction/
-├── app.py                         # FastAPI backend logic
-├── train_model.py                 # Model training script
-├── student-por-cleaned.csv        # Cleaned dataset used for training
-├── student_performance_model.joblib   # Trained RandomForest model
-├── label_encoders.joblib          # Encoders for categorical columns
-├── requirements.txt               # Python package dependencies
-└── README.md                      # Project documentation
+├── app.py                                            # FastAPI backend logic
+├── Student_Performance_model.py                      # Model training script
+├── student_performance_portuguese_dataset.csv        # Cleaned Portuguese dataset used for training
+├── student_performance_model.joblib                  # Trained RandomForest model
+├── label_encoders.joblib                             # Encoders for categorical columns
+├── requirements.txt                                  # Python package dependencies
+└── README.md                                         # Project documentation
 ```
 
 ---
@@ -36,16 +36,16 @@ student_performance_prediction/
 ## 🛠️ Installation
 
 ### Prerequisites:
-- Python 3.9+
+- Python 3.9.5
 
 ### Setup:
 ```bash
-# Clone repository and navigate
-cd student_performance_prediction
+# Repository Name
+Student_Performance_Prediction
 
 # Create virtual environment
 python -m venv venv
-source venv/bin/activate   # or venv\Scripts\activate on Windows
+venv\Scripts\activate 
 
 # Install dependencies
 pip install -r requirements.txt
@@ -58,7 +58,7 @@ pip install -r requirements.txt
 To train or retrain the model using the dataset:
 
 ```bash
-python train_model.py
+python Student_Performance_model.py
 ```
 
 This will generate the model and encoder files:
