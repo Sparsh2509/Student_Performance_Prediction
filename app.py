@@ -7,12 +7,15 @@ import joblib
 model = joblib.load("student_performance_model.joblib")
 label_encoders = joblib.load("label_encoders.joblib")
 
-# Define all 32 input features (except 'G3')
-class StudentInput(BaseModel):
+# Define section-wise input models
+
+class StudentDetails(BaseModel):
     school: str
     sex: str
     age: int
     address: str
+
+class FamilyBackground(BaseModel):
     famsize: str
     Pstatus: str
     Medu: int
@@ -21,16 +24,23 @@ class StudentInput(BaseModel):
     Fjob: str
     reason: str
     guardian: str
+    famsup: str
+
+class AcademicStatus(BaseModel):
     traveltime: int
     studytime: int
     failures: int
     schoolsup: str
-    famsup: str
     paid: str
     activities: str
+    internet: str
     nursery: str
     higher: str
-    internet: str
+    absences: int
+    G1: int
+    G2: int
+
+class HealthStatus(BaseModel):
     romantic: str
     famrel: int
     freetime: int
@@ -38,35 +48,46 @@ class StudentInput(BaseModel):
     Dalc: int
     Walc: int
     health: int
-    absences: int
-    G1: int
-    G2: int
 
-# FastAPI app
+class StudentInput(BaseModel):
+    student: StudentDetails
+    family: FamilyBackground
+    academic: AcademicStatus
+    health: HealthStatus
+
+# Initialize FastAPI app
 app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the UCI Student Performance Prediction API!"}
+    return {"message": "Welcome to the Student Performance Prediction API!"}
 
 @app.post("/predict")
 def predict(data: StudentInput):
     try:
-        input_data = data.dict()
+        # Flatten nested input dicts
+        input_data = {
+            **data.student.dict(),
+            **data.family.dict(),
+            **data.academic.dict(),
+            **data.health.dict()
+        }
 
-        # Apply label encoders to categorical fields
+        # Apply label encoding where needed
         for col in label_encoders:
-            encoder = label_encoders[col]
-            if input_data[col] not in encoder.classes_:
-                return {"error": f"Unknown category '{input_data[col]}' for field '{col}'."}
-            input_data[col] = encoder.transform([input_data[col]])[0]
+            le = label_encoders[col]
+            if input_data[col] not in le.classes_:
+                return {
+                    "error": f"Unknown value '{input_data[col]}' for field '{col}'. Allowed: {list(le.classes_)}"
+                }
+            input_data[col] = le.transform([input_data[col]])[0]
 
-        # Convert to DataFrame
+        # Create DataFrame in model's expected format
         df_input = pd.DataFrame([input_data])[model.feature_names_in_]
 
-        # Predict
+        # Predict final grade
         prediction = model.predict(df_input)[0]
-        return {"predicted_final_grade": round(prediction, 2)}
+        return {"predicted_final_Marks": round(prediction, 2)}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
