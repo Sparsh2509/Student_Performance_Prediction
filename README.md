@@ -1,4 +1,4 @@
-# 📚 Student Performance Prediction API
+# 📚 Student Performance Prediction 
 
 A machine learning-powered web API using **FastAPI** to predict the **final grade (G3)** of students based on demographic, academic, family, and personal data. This project is based on the [UCI Student Performance Dataset](https://archive.ics.uci.edu/dataset/320/student+performance).
 
@@ -77,6 +77,7 @@ uvicorn app:app --reload
 Navigate to:
 - Swagger Docs: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 - Root: [http://127.0.0.1:8000](http://127.0.0.1:8000)
+- Render: [https://student-performance-prediction-hh3v.onrender.com](https://student-performance-prediction-hh3v.onrender.com)
 
 ---
 
