@@ -24,7 +24,7 @@ A machine learning-powered web API using **FastAPI** to predict the **final grad
 student_performance_prediction/
 ├── app.py                                            # FastAPI backend logic
 ├── Student_Performance_model.py                      # Model training script
-├── student_performance_portuguese_dataset.csv        # Cleaned Portuguese dataset used for training 
+├── student_performance_portuguese_dataset.csv        # Cleaned Portuguese dataset used for training model
 ├── student_performance_model.joblib                  # Trained RandomForest model
 ├── label_encoders.joblib                             # Encoders for categorical columns
 ├── requirements.txt                                  # Python package dependencies
